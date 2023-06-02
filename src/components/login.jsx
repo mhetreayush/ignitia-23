@@ -14,7 +14,7 @@ const Login = () => {
         const { user } = result;
         localStorage.setItem("user", JSON.stringify(user));
 
-        router.push("/");
+        router.push("/prompt");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
@@ -31,10 +31,14 @@ const Login = () => {
       });
   };
   return (
-    <GoogleButton
-      type="light" // can be light or dark
-      onClick={signIn}
-    />
+    <div className="flex flex-col gap-y-4 py-10 w-full bg-white items-center justify-center m-14 rounded-md">
+      <h1 className="font-semibold text-2xl">Login</h1>
+      <GoogleButton
+        style={{ width: "75%" }}
+        type="light" // can be light or dark
+        onClick={signIn}
+      />
+    </div>
   );
 };
 

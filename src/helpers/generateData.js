@@ -3,6 +3,9 @@ export const generateData = async (phrase, setData, type) => {
   let toGenerate = "";
   const setType = (type) => {
     switch (type) {
+      case "ideas":
+        toGenerate = `Generate 3 product or platform ideas for the phrase '${phrase}' separate the ideas with string nextIdeaStartsHere`;
+        break;
       case "PS":
         toGenerate = `Generate a problem statement for the phrase '${phrase}' max 90 words.`;
         break;
@@ -27,37 +30,36 @@ export const generateData = async (phrase, setData, type) => {
     }
   };
   setType(type);
-  setData(testData[type].choices[0].text);
-  // const requestOptions = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization:
-  //       "Bearer " +
-  //       String(process.env.NEXT_PUBLIC_OPEN_AI_API_KEY),
-  //   },
-  //   body: JSON.stringify({
-  //     prompt: toGenerate,
-  //     temperature: 0.1,
-  //     max_tokens: 100,
-  //     top_p: 1,
-  //     frequency_penalty: 0,
-  //     presence_penalty: 0.5,
-  //     stop: ['"""'],
-  //   }),
-  // };
+  // setData(testData[type].choices[0].text);
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Bearer " + String(process.env.NEXT_PUBLIC_OPEN_AI_API_KEY),
+    },
+    body: JSON.stringify({
+      prompt: toGenerate,
+      temperature: 0.1,
+      max_tokens: 300,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.5,
+      stop: ['"""'],
+    }),
+  };
 
-  // fetch(
-  //   "https://api.openai.com/v1/engines/text-davinci-003/completions",
-  //   requestOptions
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     // # Do something with data
-  //     console.log(data);
-  //     setData(data.choices[0].text);
-  //   })
-  //   .catch((err) => {
-  //     console.log("Ran out of tokens for today! Try tomorrow!");
-  //   });
+  fetch(
+    "https://api.openai.com/v1/engines/text-davinci-003/completions",
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // # Do something with data
+      console.log(data);
+      setData(data.choices[0].text);
+    })
+    .catch((err) => {
+      console.log("Ran out of tokens for today! Try tomorrow!");
+    });
 };
