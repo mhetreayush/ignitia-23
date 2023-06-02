@@ -2,7 +2,6 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 import Login from "@/components/login";
 import { useRef, useState } from "react";
-import { tryApi } from "@/helpers/generateData";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,18 +25,7 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <button onClick={tryApi}>Try</button>
           <Login />
-
-          <input type="text" ref={inputRef} />
-          <button
-            onClick={() => {
-              tryApi(inputRef.current.value, setData);
-            }}
-          >
-            Submit
-          </button>
-          {data && <p>{data}</p>}
         </div>
       </main>
     </>

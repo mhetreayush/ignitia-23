@@ -1,6 +1,5 @@
 import testData from "@/../testData.json";
 export const generateData = async (phrase, setData, type) => {
-  console.log(testData);
   let toGenerate = "";
   const setType = (type) => {
     switch (type) {
