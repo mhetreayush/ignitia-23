@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 
-const IdeaLink = ({ idea, idx, id }) => {
+export const IdeaLink = ({ idea, idx, id }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const createIdea = async () => {

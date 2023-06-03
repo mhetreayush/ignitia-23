@@ -7,13 +7,13 @@ export const generateData = async (phrase, setData, type) => {
         toGenerate = `Generate 3 product or platform ideas for the phrase '${phrase}' separate the ideas with string <<<->>>`;
         break;
       case "PS":
-        toGenerate = `Generate a problem statement for the phrase '${phrase}' max 90 words.`;
+        toGenerate = `Generate a problem statement for the phrase '${phrase}'`;
         break;
       case "MR":
-        toGenerate = `Generate a market research for the product according to phrase '${phrase}' max 90 words.`;
+        toGenerate = `Generate a market research for the product according to phrase '${phrase}'`;
         break;
       case "PR":
-        toGenerate = `Generate a questionnaire of 4 MCQ questions with options for the phrase '${phrase}' and the output should be in the form of json parsible string with the following format: {"question": "question", "options": ["option1", "option2", "option3", "option4"]} and seperate each object with string <<<->>> and not with comma make sure to terminate the objects properly and dont use fractions`;
+        toGenerate = `Generate a questionnaire of 4 MCQ questions intended for the users to get their opinions about the features they want, the problems they face, etc. with options for the phrase '${phrase}' and the output should be in the form of json parsible string with the following format: {"question": "question", "options": ["option1", "option2", "option3", "option4"]} and seperate each object with string <<<->>> and not with comma make sure to terminate the objects properly and dont use fractions`;
         break;
       case "SR":
         toGenerate = `Give research article links about the phrase ${phrase}`;

@@ -9,9 +9,10 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "../../../firebase";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { BsCheckSquareFill, BsSquare } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 export const QuestionSection = ({ data }) => {
   const router = useRouter();
@@ -23,7 +24,8 @@ export const QuestionSection = ({ data }) => {
   }, []);
   const createFormLink = async () => {
     setCreateLinkTrue(true);
-
+    navigator.clipboard.writeText(liveLink);
+    toast.success("Link copied to clipboard");
     // const user = JSON.parse(localStorage.getItem("user")).uid;
     try {
       await setDoc(doc(db, "forms", tempLink), {
@@ -86,12 +88,21 @@ export const QuestionSection = ({ data }) => {
         );
       })}
       {router.asPath.includes("idea") && (
-        <button disabled={createLinkTrue} onClick={createFormLink}>
+        <button
+          className="rounded-md p-2 bg-green-800 w-fit"
+          disabled={createLinkTrue}
+          onClick={createFormLink}
+        >
           Create Link
         </button>
       )}
       {router.asPath.includes("form") && (
-        <button onClick={updateResponses}>Submit</button>
+        <button
+          className="rounded-md p-2 bg-green-800 w-fit"
+          onClick={updateResponses}
+        >
+          Submit
+        </button>
       )}
       {createLinkTrue && (
         <p onClick={() => navigator.clipboard.write(liveLink)}>{liveLink}</p>
@@ -145,7 +156,7 @@ const IdeaSection = ({ title, desc, type }) => {
       )}
       <div className="w-full flex justify-between">
         <button
-          className="bg-[#5E2A8E] rounded-md py-2 px-6"
+          className="bg-[#5E2A8E] rounded-md py-2 px-6 "
           onClick={() => {
             generateData(phrase, setData, type),
               setShowDesc(false),
@@ -153,8 +164,9 @@ const IdeaSection = ({ title, desc, type }) => {
             setIsTicked(true);
           }}
         >
-          Generate
+          {isGenerated ? "Regenerate" : "Generate"}
         </button>
+
         <button
           disabled={!isGenerated}
           onClick={() => setIsTicked(!isTicked)}
@@ -170,6 +182,10 @@ const IdeaSection = ({ title, desc, type }) => {
 const Idea = () => {
   const router = useRouter();
   const { ideaId } = router.query;
+  const pdfRef = useRef();
+  useEffect(() => {
+    console.log(pdfRef.current);
+  }, [pdfRef]);
   const sections = [
     {
       title: "Problem Statement",
@@ -209,7 +225,10 @@ const Idea = () => {
   ];
   return (
     <PageWrapper>
-      <div className="flex flex-col w-full gap-y-4 p-6 bg-[#1F1926] rounded-md">
+      <div
+        className="flex flex-col w-full gap-y-6 p-6 bg-[#1F1926] rounded-md"
+        ref={pdfRef}
+      >
         {sections.map((section, idx) => {
           return <IdeaSection key={idx} {...section} />;
         })}
