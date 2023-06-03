@@ -6,7 +6,7 @@
 
 @layer components {
     body {
-        @apply bg-gradient-to-r from-gray-900 to-purple-900 text-white;
+        @apply bg-gradient-to-b min-h-screen from-gray-900 to-purple-900 text-white;
     }
 
     .innerCard {
