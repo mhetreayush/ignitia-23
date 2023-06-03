@@ -2,7 +2,10 @@ import Sidebar from "./SIdebar";
 
 const PageWrapper = ({ children }) => {
   return (
-    <div className="">
+    <div>
+      <div className="w-full p-4">
+        <h1 className="text-2xl font-bold">ResearchPilot</h1>
+      </div>
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <Sidebar />

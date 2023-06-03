@@ -46,7 +46,17 @@ const FormTemplate = () => {
   useEffect(() => {
     getForm();
   }, [formid]);
-  return <div>{questionStr && <QuestionSection data={questionStr} />}</div>;
+  return (
+    <div className="flex w-full justify-center items-center min-h-screen">
+      <div className="innerCard w-[75%]">
+        <h1 className="text-center font-extralight">
+          Form Generated with the help of{" "}
+          <span className="font-bold">ResearchPilot</span>
+        </h1>
+        {questionStr && <QuestionSection data={questionStr} />}
+      </div>
+    </div>
+  );
 };
 
 export default FormTemplate;

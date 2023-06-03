@@ -12,6 +12,9 @@ export const generateData = async (phrase, setData, type) => {
       case "MR":
         toGenerate = `Generate a market research for the product according to phrase '${phrase}'`;
         break;
+      case "CP":
+        toGenerate = `Generate a competitive analysis & name the competitors for the product according to phrase '${phrase}'`;
+        break;
       case "PR":
         toGenerate = `Generate a questionnaire of 4 MCQ questions intended for the users to get their opinions about the features they want, the problems they face, etc. with options for the phrase '${phrase}' and the output should be in the form of json parsible string with the following format: {"question": "question", "options": ["option1", "option2", "option3", "option4"]} and seperate each object with string <<<->>> and not with comma make sure to terminate the objects properly and dont use fractions`;
         break;

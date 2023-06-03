@@ -98,7 +98,7 @@ export const QuestionSection = ({ data }) => {
       )}
       {router.asPath.includes("form") && (
         <button
-          className="rounded-md p-2 bg-green-800 w-fit"
+          className="rounded-md p-2 bg-[#5E2A8E] w-fit"
           onClick={updateResponses}
         >
           Submit
@@ -196,6 +196,11 @@ const Idea = () => {
       title: "Market Research",
       type: "MR",
       desc: "Market research is the process of gathering information about your business's buyers personas, target audience, and customers to determine how viable and successful your product or service would be, and/or is, among these people.",
+    },
+    {
+      title: "Competitors",
+      type: "CP",
+      desc: "A competitor is a person, business, team, or organization that competes against you or your company. If you sell sporting goods, for example, you compete with large sporting goods retailers, but you also compete with department stores, local markets, and other businesses that provide similar products.",
     },
     {
       title: "Primary Research",
