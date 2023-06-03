@@ -4,11 +4,85 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { BsCheckSquareFill, BsSquare } from "react-icons/bs";
 
+export const QuestionSection = ({ data }) => {
+  const test = `
+  {"question": "What is the purpose of an e-commerce website for custom cricket merchandise?", 
+  "options": ["To sell cricket merchandise online", "To provide custom cricket merchandise", "To provide information about cricket merchandise", "To provide reviews about cricket merchandise"]}<<<->>>
+  
+  {"question": "Which of the following is a feature of an e-commerce website for custom cricket merchandise?", 
+  "options": ["Secure payment gateway", "Live chat support", "In-store pickup", "Free shipping"]}<<<->>>
+  
+  {"question": "Which of the following is a benefit of using an e-commerce website for custom cricket merchandise?", 
+  "options": ["Convenience", "Lower prices", "Faster delivery", "More selection"]}<<<->>>
+
+  {"question": "What type of products can be found on an e-commerce website for custom cricket merchandise?", 
+  "options": ["Clothing", "Equipment", "Accessories", "All of the above"]}<<<->>>
+    {"question": "What type of payment methods are accepted on an e-commerce website for custom cricket merchandise?", 
+  "options": ["Credit cards", "Debit cards", "PayPal", "All of the above"]}`;
+
+  // console.log(test.split("<<<->>>"));
+  // return [test].map((quest, idx) => {
+  //   return <h1 key={idx}>{quest}</h1>;
+  // });
+
+  // test.split("<<<->>>").map((quest, idx) => {
+  //   console.log(JSON.parse(quest).question);
+  // });
+
+  return data?.split("<<<->>>").map((quest, idx) => {
+    const temp = JSON.parse(quest);
+    return (
+      <div key={idx}>
+        <h1 className="font-bold text-lg">{temp.question}</h1>
+        {temp.options.map((opt, idx) => {
+          return (
+            <>
+              <input
+                type="radio"
+                name={temp.question}
+                id={opt}
+                value={opt}
+                className="mr-2"
+              />
+              <label htmlFor={opt}>{opt}</label>
+              <br />
+            </>
+          );
+        })}
+      </div>
+    );
+  });
+  // return test.split("<<<->>>").map((quest, idx) => {
+  //   const temp = JSON.parse(quest);
+  //   return (
+  //     <div key={idx}>
+  //       <h1 className="font-bold text-lg">{temp.question}</h1>
+  //       {temp.options.map((opt, idx) => {
+  //         return (
+  //           <>
+  //             <input
+  //               type="radio"
+  //               name={temp.question}
+  //               id={opt}
+  //               value={opt}
+  //               className="mr-2"
+  //             />
+  //             <label htmlFor={opt}>{opt}</label>
+  //             <br />
+  //           </>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // });
+};
 const IdeaSection = ({ title, desc, type }) => {
   const [data, setData] = useState(null);
   const [showDesc, setShowDesc] = useState(true);
   const [isTicked, setIsTicked] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
+  const { idea } = useRouter().query;
+  console.log(idea);
   return (
     <div className="innerCard">
       <div>
@@ -16,7 +90,8 @@ const IdeaSection = ({ title, desc, type }) => {
         <h1 className="font-semibold text-2xl">{title}</h1>
         {showDesc && <p className="text-gray-400 mt-4">{desc}</p>}
       </div>{" "}
-      {data && <p>{data}</p>}
+      {type != "PR" && data && <p>{data}</p>}
+      {type == "PR" && data && <QuestionSection data={[data]} />}
       <div className="w-full flex justify-between">
         <button
           className="bg-[#5E2A8E] rounded-md py-2 px-6"
