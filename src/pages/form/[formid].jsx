@@ -2,13 +2,14 @@ import { db } from "@/../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
+import { QuestionSection } from "../idea/[ideaId]";
 
 const FormTemplate = () => {
   const [dbName, setDbName] = useState("");
   const [newName, setNewName] = useState("");
   const router = useRouter();
   const { formid } = router.query;
-
+  const [questionStr, setQuestionStr] = useState("");
   const updateName = async () => {
     try {
       await setDoc(doc(db, "forms", formid), {
@@ -27,7 +28,7 @@ const FormTemplate = () => {
 
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setDbName(docSnap.data().name);
+        setQuestionStr(docSnap.data().jsonString);
       } else {
         console.log("No such document!");
       }
@@ -39,13 +40,7 @@ const FormTemplate = () => {
   useEffect(() => {
     getName();
   }, [formid]);
-  return (
-    <div>
-      <input type="text" onChange={(e) => setNewName(e.target.value)} />
-      <button onClick={updateName}>Update</button>
-      <h1>Current: {dbName}</h1>
-    </div>
-  );
+  return <div>{questionStr && <QuestionSection data={questionStr} />}</div>;
 };
 
 export default FormTemplate;

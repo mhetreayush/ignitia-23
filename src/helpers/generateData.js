@@ -4,7 +4,7 @@ export const generateData = async (phrase, setData, type) => {
   const setType = (type) => {
     switch (type) {
       case "ideas":
-        toGenerate = `Generate 3 product or platform ideas for the phrase '${phrase}' separate the ideas with string nextIdeaStartsHere`;
+        toGenerate = `Generate 3 product or platform ideas for the phrase '${phrase}' separate the ideas with string <<<->>>`;
         break;
       case "PS":
         toGenerate = `Generate a problem statement for the phrase '${phrase}' max 90 words.`;
@@ -13,7 +13,7 @@ export const generateData = async (phrase, setData, type) => {
         toGenerate = `Generate a market research for the product according to phrase '${phrase}' max 90 words.`;
         break;
       case "PR":
-        toGenerate = `Generate a questionnaire of 10 questions for form to circulate to the public and get their opinions with options about product about phrase '${phrase}'`;
+        toGenerate = `Generate a questionnaire of 10 MCQ questions with options for the phrase '${phrase}' and the output should be in the form of json parsible string with the following format: {"question": "question", "options": ["option1", "option2", "option3", "option4"]} and seperate each object with string <<<->>> and not with comma`;
         break;
       case "SR":
         toGenerate = `Give research article links about the phrase ${phrase}`;
@@ -30,36 +30,36 @@ export const generateData = async (phrase, setData, type) => {
     }
   };
   setType(type);
-  // setData(testData[type].choices[0].text);
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Bearer " + String(process.env.NEXT_PUBLIC_OPEN_AI_API_KEY),
-    },
-    body: JSON.stringify({
-      prompt: toGenerate,
-      temperature: 0.1,
-      max_tokens: 300,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0.5,
-      stop: ['"""'],
-    }),
-  };
+  setData(testData[type].choices[0].text);
+  // const requestOptions = {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization:
+  //       "Bearer " + String(process.env.NEXT_PUBLIC_OPEN_AI_API_KEY),
+  //   },
+  //   body: JSON.stringify({
+  //     prompt: toGenerate,
+  //     temperature: 0.1,
+  //     max_tokens: 300,
+  //     top_p: 1,
+  //     frequency_penalty: 0,
+  //     presence_penalty: 0.5,
+  //     stop: ['"""'],
+  //   }),
+  // };
 
-  fetch(
-    "https://api.openai.com/v1/engines/text-davinci-003/completions",
-    requestOptions
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // # Do something with data
-      console.log(data);
-      setData(data.choices[0].text);
-    })
-    .catch((err) => {
-      console.log("Ran out of tokens for today! Try tomorrow!");
-    });
+  // fetch(
+  //   "https://api.openai.com/v1/engines/text-davinci-003/completions",
+  //   requestOptions
+  // )
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     // # Do something with data
+  //     console.log(data);
+  //     setData(data.choices[0].text);
+  //   })
+  //   .catch((err) => {
+  //     console.log("Ran out of tokens for today! Try tomorrow!");
+  //   });
 };

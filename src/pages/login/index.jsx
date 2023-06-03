@@ -8,7 +8,7 @@ const Index = () => {
         <div className="flex h-full w-full justify-center items-center">
           <Login />
         </div>
-        <div className="flex h-full w-full justify-center items-center">
+        <div className="flex  h-full w-full justify-center items-center">
           <Image src={LoginIll} alt="Login Illustration" />
         </div>
       </div>

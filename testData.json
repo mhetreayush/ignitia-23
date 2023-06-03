@@ -6,7 +6,7 @@
     "model": "text-davinci-003",
     "choices": [
       {
-        "text": "\n\n1. An online platform that allows customers to design their own custom cricket jersey and order it directly from the ecommerce shop. \nnextIdeaStartsHere\n2. A mobile app that allows customers to browse through a variety of custom cricket jerseys and order them directly from the ecommerce shop. \nnextIdeaStartsHere\n3. A website that allows customers to customize their own cricket jersey with a variety of colors, logos, and designs, and then order it",
+        "text": "\n\n1. An online platform that allows customers to design their own custom cricket jersey and order it directly from the ecommerce shop. \n<<<->>>\n2. A mobile app that allows customers to browse through a variety of custom cricket jerseys and order them directly from the ecommerce shop. \n<<<->>>\n3. A website that allows customers to customize their own cricket jersey with a variety of colors, logos, and designs, and then order it",
         "index": 0,
         "logprobs": null,
         "finish_reason": "length"
