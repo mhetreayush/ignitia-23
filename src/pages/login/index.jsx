@@ -1,5 +1,5 @@
-import Login from "@/components/Login";
 import LoginIll from "@/../public/Assets/loginIll.svg";
+import Login from "@/components/Login";
 import Image from "next/image";
 const Index = () => {
   return (
