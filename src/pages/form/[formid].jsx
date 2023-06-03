@@ -10,35 +10,34 @@ const FormTemplate = () => {
   const router = useRouter();
   const { formid } = router.query;
   const [questionStr, setQuestionStr] = useState("");
-  const updateName = async () => {
-    try {
-      await setDoc(doc(db, "forms", formid), {
-        name: newName,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    getForm();
-  };
+  // const updateName = async () => {
+  //   try {
+  //     await setDoc(doc(db, "forms", formid), {
+  //       name: newName,
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   getForm();
+  // };
 
   const getForm = async () => {
-    const user = JSON.parse(localStorage.getItem("user")).uid;
-    try {
-      const docRef = doc(db, "forms", user);
-      const docSnap = await getDoc(docRef);
+    // const user = JSON.parse(localStorage.getItem("user")).uid;
 
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        const arr = docSnap.data().forms;
-        arr.forEach((element) => {
-          if (element.id === formid) {
-            setQuestionStr(element.data);
-          }
-        });
-        // setQuestionStr(docSnap.data().jsonString);
-      } else {
-        console.log("No such document!");
-      }
+    try {
+      const docRef = doc(db, "forms", formid);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data());
+      setQuestionStr(docSnap.data().data);
+      // if (docSnap.exists()) {
+      //   console.log("Document data:", docSnap.data());
+      //   const arr = docSnap.data().forms;
+      //   arr.forEach((element) => {
+      //     if (element.id === formid) {
+      //       setQuestionStr(element.data);
+      //     }
+      //   });
+      // setQuestionStr(docSnap.data().jsonString);
     } catch (err) {
       console.log(err);
     }

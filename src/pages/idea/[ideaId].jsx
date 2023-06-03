@@ -1,6 +1,12 @@
 import PageWrapper from "@/components/PageWrapper";
 import { generateData } from "@/helpers/generateData";
-import { arrayRemove, arrayUnion, doc, setDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "../../../firebase";
 import { useEffect, useState } from "react";
@@ -11,20 +17,18 @@ export const QuestionSection = ({ data }) => {
   const router = useRouter();
   const [createLinkTrue, setCreateLinkTrue] = useState(false);
   const [tempLink, setTempLink] = useState("");
+  console.log(data);
   useEffect(() => {
     setTempLink(uuidv4());
   }, []);
   const createFormLink = async () => {
     setCreateLinkTrue(true);
 
-    const user = JSON.parse(localStorage.getItem("user")).uid;
+    // const user = JSON.parse(localStorage.getItem("user")).uid;
     try {
-      await setDoc(doc(db, "forms", user), {
-        forms: arrayUnion({
-          id: tempLink,
-          // data
-          data,
-        }),
+      await setDoc(doc(db, "forms", tempLink), {
+        data,
+        responses: [],
       });
     } catch (err) {
       console.log(err);
@@ -32,20 +36,20 @@ export const QuestionSection = ({ data }) => {
     // console.log(response);
   };
 
-  const test = `
-  {"question": "What is the purpose of an e-commerce website for custom cricket merchandise?", 
-  "options": ["To sell cricket merchandise online", "To provide custom cricket merchandise", "To provide information about cricket merchandise", "To provide reviews about cricket merchandise"]}<<<->>>
-  
-  {"question": "Which of the following is a feature of an e-commerce website for custom cricket merchandise?", 
-  "options": ["Secure payment gateway", "Live chat support", "In-store pickup", "Free shipping"]}<<<->>>
-  
-  {"question": "Which of the following is a benefit of using an e-commerce website for custom cricket merchandise?", 
-  "options": ["Convenience", "Lower prices", "Faster delivery", "More selection"]}<<<->>>
+  // const test = `
+  // {"question": "What is the purpose of an e-commerce website for custom cricket merchandise?",
+  // "options": ["To sell cricket merchandise online", "To provide custom cricket merchandise", "To provide information about cricket merchandise", "To provide reviews about cricket merchandise"]}<<<->>>
 
-  {"question": "What type of products can be found on an e-commerce website for custom cricket merchandise?", 
-  "options": ["Clothing", "Equipment", "Accessories", "All of the above"]}<<<->>>
-    {"question": "What type of payment methods are accepted on an e-commerce website for custom cricket merchandise?", 
-  "options": ["Credit cards", "Debit cards", "PayPal", "All of the above"]}`;
+  // {"question": "Which of the following is a feature of an e-commerce website for custom cricket merchandise?",
+  // "options": ["Secure payment gateway", "Live chat support", "In-store pickup", "Free shipping"]}<<<->>>
+
+  // {"question": "Which of the following is a benefit of using an e-commerce website for custom cricket merchandise?",
+  // "options": ["Convenience", "Lower prices", "Faster delivery", "More selection"]}<<<->>>
+
+  // {"question": "What type of products can be found on an e-commerce website for custom cricket merchandise?",
+  // "options": ["Clothing", "Equipment", "Accessories", "All of the above"]}<<<->>>
+  //   {"question": "What type of payment methods are accepted on an e-commerce website for custom cricket merchandise?",
+  // "options": ["Credit cards", "Debit cards", "PayPal", "All of the above"]}`;
 
   const updateResponses = async () => {};
   const liveLink = `${
@@ -54,9 +58,11 @@ export const QuestionSection = ({ data }) => {
       : "https://ignitia-23.vercel.app"
   }/form/${tempLink}`;
   // const liveLink = `https://ignitia-23.vercel.app/form/${formLink}`
+  ('\n\n1. What type of platform is this? \n{"question": "What type of platform is this?", "options": ["Online Shopping Platform", "Online Wedding Planning Platform", "Online Event Planning Platform", "Online Travel Planning Platform"]}<<<->>>\n2. What type of tools does this platform provide? \n{"question": "What type of tools does this platform provide?", "options": ["Budgeting", "Guest List Management", "Vendor Selection", "All of the Above"]}<<<->>>\n3. What is the main purpose of this platform? \n{"question": "What is the main purpose of this platform?", "options": ["To help plan weddings", "To help plan events", "To help plan trips", "To help plan budgets"]}<<<->>>\n4. What type of users does this platform cater to? \n{"question": "What type of users does this platform cater to?", "options": ["Wedding Planners", "Event Planners", "Travelers", "Wedding Couples"]}<<<->>>\n5. What is the primary benefit of using this platform? \n{"question": "What is the primary benefit of using this platform?", "options": ["Saving Time", "Saving Money", "Organizing Events", "Finding Vendors"]}<<<->>>\n6. What type of information can be found on this platform');
+
   return (
     <>
-      {test.split("<<<->>>").map((quest, idx) => {
+      {data?.split("<<<->>>").map((quest, idx) => {
         const temp = JSON.parse(quest);
         return (
           <div key={idx}>
@@ -99,9 +105,31 @@ const IdeaSection = ({ title, desc, type }) => {
   const [showDesc, setShowDesc] = useState(true);
   const [isTicked, setIsTicked] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
-  const { idea } = useRouter().query;
-  console.log(idea);
+  const { ideaId } = useRouter().query;
+  const [phrase, setPhrase] = useState("");
+  console.log(ideaId);
 
+  const fetchIdeas = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user")).uid;
+      const docRef = doc(db, "ideas", user);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const arr = docSnap.data().ideas;
+        arr?.forEach((element) => {
+          if (element.id === ideaId) {
+            setPhrase(element.idea);
+          }
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
   return (
     <div className="innerCard">
       <div>
@@ -112,18 +140,14 @@ const IdeaSection = ({ title, desc, type }) => {
       {type != "PR" && data && <p>{data}</p>}
       {type == "PR" && data && (
         <>
-          <QuestionSection data={[data]} />
+          <QuestionSection data={data} />
         </>
       )}
       <div className="w-full flex justify-between">
         <button
           className="bg-[#5E2A8E] rounded-md py-2 px-6"
           onClick={() => {
-            generateData(
-              "E commerce website for custom cricket merchandise",
-              setData,
-              type
-            ),
+            generateData(phrase, setData, type),
               setShowDesc(false),
               setIsGenerated(true);
             setIsTicked(true);
