@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 
-import { useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +15,10 @@ const openai = new OpenAIApi(configuration);
 export default function Home() {
   const [data, setData] = useState(null);
   const inputRef = useRef(null);
-
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/login");
+  }, []);
   return (
     <>
       <Head>
