@@ -18,6 +18,7 @@ export const QuestionSection = ({ data }) => {
   const router = useRouter();
   const [createLinkTrue, setCreateLinkTrue] = useState(false);
   const [tempLink, setTempLink] = useState("");
+  const radioRef = useRef(null);
   console.log(data);
   useEffect(() => {
     setTempLink(uuidv4());
@@ -73,11 +74,13 @@ export const QuestionSection = ({ data }) => {
               return (
                 <>
                   <input
+                    key={idx}
                     type="radio"
                     name={temp.question}
                     id={opt}
                     value={opt}
-                    className="mr-2"
+                    className="mr-2 hover:cursor-pointer"
+                    ref={radioRef}
                   />
                   <label htmlFor={opt}>{opt}</label>
                   <br />
@@ -201,6 +204,21 @@ const Idea = () => {
       title: "Competitors",
       type: "CP",
       desc: "A competitor is a person, business, team, or organization that competes against you or your company. If you sell sporting goods, for example, you compete with large sporting goods retailers, but you also compete with department stores, local markets, and other businesses that provide similar products.",
+    },
+    {
+      title: "USP (Unique Selling Point)",
+      type: "USP",
+      desc: "A unique selling proposition (USP) refers to the unique benefit exhibited by a company, service, product or brand that enables it to stand out from competitors. The unique selling proposition must be a feature that highlights product benefits that are meaningful to consumers.",
+    },
+    {
+      title: "Scalability",
+      type: "SC",
+      desc: "Scalability is the measure of a system's ability to increase or decrease in performance and cost in response to changes in application and system processing demands. ... Scalability is essential in that it contributes to competitiveness, efficiency, reputation and quality.",
+    },
+    {
+      title: "Target Audience",
+      type: "TA",
+      desc: "A target audience is a group of people defined by certain demographics and behavior. Often, businesses use what they know about their target audience to create user personas. ... Finding a target audience means discovering what kind of people are most likely to be interested in your service or product.",
     },
     {
       title: "Primary Research",

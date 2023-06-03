@@ -4,9 +4,10 @@ import { db } from "@/../firebase";
 import { arrayUnion, doc, setDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BsSend } from "react-icons/bs";
+import { AiOutlineSend } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
-
+import PromptIll from "@/../public/Assets/promptIll.svg";
+import Image from "next/image";
 export const IdeaLink = ({ idea, idx, id }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -66,10 +67,14 @@ const Prompt = () => {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <button onClick={() => generateData(prompt, setIdeas, "ideas")}>
-            <BsSend fontSize={32} />
+            <AiOutlineSend fontSize={32} />
           </button>
         </div>
-
+        {ideas.length === 0 && (
+          <div className="flex w-full items-center justify-center pt-[20vh]">
+            <Image src={PromptIll} alt="Prompt Illustration" />
+          </div>
+        )}
         {ideas.length > 0 && (
           <div className="flex flex-col w-full gap-y-4 p-4 bg-[#1F1926] rounded-md mt-4">
             {ideas.split("<<<->>>").map((idea, idx) => {

@@ -33,7 +33,7 @@ const Sidebar = () => {
             key={idx}
             href={path.link}
             className={`flex gap-x-3 item-center text-lg pl-4 py-4 rounded-r-lg ${
-              activePage === path.link && "bg-[#1F1926]"
+              activePage === path.link && "bg-[#461d6c]"
             }`}
           >
             <p className="font-extralight self-center">{path.icon}</p>

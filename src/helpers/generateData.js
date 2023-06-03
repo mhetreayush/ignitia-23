@@ -12,6 +12,15 @@ export const generateData = async (phrase, setData, type) => {
       case "MR":
         toGenerate = `Generate a market research for the product according to phrase '${phrase}'`;
         break;
+      case "USP":
+        toGenerate = `Generate 1 to 3 unique selling proposition(s) (USP) for the product according to phrase '${phrase}'`;
+        break;
+      case "SC":
+        toGenerate = `Tell me how can I scale the product made according to phrase '${phrase}'`;
+        break;
+      case "TA":
+        toGenerate = `Generate a target audience for the product according to phrase '${phrase}'`;
+        break;
       case "CP":
         toGenerate = `Generate a competitive analysis & name the competitors for the product according to phrase '${phrase}'`;
         break;
