@@ -18,17 +18,24 @@ const FormTemplate = () => {
     } catch (err) {
       console.log(err);
     }
-    getName();
+    getForm();
   };
 
-  const getName = async () => {
+  const getForm = async () => {
+    const user = JSON.parse(localStorage.getItem("user")).uid;
     try {
-      const docRef = doc(db, "forms", formid);
+      const docRef = doc(db, "forms", user);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setQuestionStr(docSnap.data().jsonString);
+        const arr = docSnap.data().forms;
+        arr.forEach((element) => {
+          if (element.id === formid) {
+            setQuestionStr(element.data);
+          }
+        });
+        // setQuestionStr(docSnap.data().jsonString);
       } else {
         console.log("No such document!");
       }
@@ -38,7 +45,7 @@ const FormTemplate = () => {
   };
 
   useEffect(() => {
-    getName();
+    getForm();
   }, [formid]);
   return <div>{questionStr && <QuestionSection data={questionStr} />}</div>;
 };

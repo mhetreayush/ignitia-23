@@ -1,10 +1,37 @@
 import PageWrapper from "@/components/PageWrapper";
 import { generateData } from "@/helpers/generateData";
+import { arrayRemove, arrayUnion, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { db } from "../../../firebase";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { BsCheckSquareFill, BsSquare } from "react-icons/bs";
 
 export const QuestionSection = ({ data }) => {
+  const router = useRouter();
+  const [createLinkTrue, setCreateLinkTrue] = useState(false);
+  const [tempLink, setTempLink] = useState("");
+  useEffect(() => {
+    setTempLink(uuidv4());
+  }, []);
+  const createFormLink = async () => {
+    setCreateLinkTrue(true);
+
+    const user = JSON.parse(localStorage.getItem("user")).uid;
+    try {
+      await setDoc(doc(db, "forms", user), {
+        forms: arrayUnion({
+          id: tempLink,
+          // data
+          data,
+        }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(response);
+  };
+
   const test = `
   {"question": "What is the purpose of an e-commerce website for custom cricket merchandise?", 
   "options": ["To sell cricket merchandise online", "To provide custom cricket merchandise", "To provide information about cricket merchandise", "To provide reviews about cricket merchandise"]}<<<->>>
@@ -20,62 +47,53 @@ export const QuestionSection = ({ data }) => {
     {"question": "What type of payment methods are accepted on an e-commerce website for custom cricket merchandise?", 
   "options": ["Credit cards", "Debit cards", "PayPal", "All of the above"]}`;
 
-  // console.log(test.split("<<<->>>"));
-  // return [test].map((quest, idx) => {
-  //   return <h1 key={idx}>{quest}</h1>;
-  // });
-
-  // test.split("<<<->>>").map((quest, idx) => {
-  //   console.log(JSON.parse(quest).question);
-  // });
-
-  return data?.split("<<<->>>").map((quest, idx) => {
-    const temp = JSON.parse(quest);
-    return (
-      <div key={idx}>
-        <h1 className="font-bold text-lg">{temp.question}</h1>
-        {temp.options.map((opt, idx) => {
-          return (
-            <>
-              <input
-                type="radio"
-                name={temp.question}
-                id={opt}
-                value={opt}
-                className="mr-2"
-              />
-              <label htmlFor={opt}>{opt}</label>
-              <br />
-            </>
-          );
-        })}
-      </div>
-    );
-  });
-  // return test.split("<<<->>>").map((quest, idx) => {
-  //   const temp = JSON.parse(quest);
-  //   return (
-  //     <div key={idx}>
-  //       <h1 className="font-bold text-lg">{temp.question}</h1>
-  //       {temp.options.map((opt, idx) => {
-  //         return (
-  //           <>
-  //             <input
-  //               type="radio"
-  //               name={temp.question}
-  //               id={opt}
-  //               value={opt}
-  //               className="mr-2"
-  //             />
-  //             <label htmlFor={opt}>{opt}</label>
-  //             <br />
-  //           </>
-  //         );
-  //       })}
-  //     </div>
-  //   );
-  // });
+  const updateResponses = async () => {};
+  const liveLink = `${
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://ignitia-23.vercel.app"
+  }/form/${tempLink}`;
+  // const liveLink = `https://ignitia-23.vercel.app/form/${formLink}`
+  return (
+    <>
+      {test.split("<<<->>>").map((quest, idx) => {
+        const temp = JSON.parse(quest);
+        return (
+          <div key={idx}>
+            <h1 className="font-bold text-lg">{temp.question}</h1>
+            {temp.options.map((opt, idx) => {
+              return (
+                <>
+                  <input
+                    type="radio"
+                    name={temp.question}
+                    id={opt}
+                    value={opt}
+                    className="mr-2"
+                  />
+                  <label htmlFor={opt}>{opt}</label>
+                  <br />
+                </>
+              );
+            })}
+          </div>
+        );
+      })}
+      {router.asPath.includes("idea") && (
+        <button disabled={createLinkTrue} onClick={createFormLink}>
+          Create Link
+        </button>
+      )}
+      {router.asPath.includes("form") && (
+        <button onClick={updateResponses}>Submit</button>
+      )}
+      {createLinkTrue && (
+        <p onClick={() => navigator.clipboard.write(liveLink)}>{liveLink}</p>
+      )}
+    </>
+  );
 };
+
 const IdeaSection = ({ title, desc, type }) => {
   const [data, setData] = useState(null);
   const [showDesc, setShowDesc] = useState(true);
@@ -83,6 +101,7 @@ const IdeaSection = ({ title, desc, type }) => {
   const [isGenerated, setIsGenerated] = useState(false);
   const { idea } = useRouter().query;
   console.log(idea);
+
   return (
     <div className="innerCard">
       <div>
@@ -91,7 +110,11 @@ const IdeaSection = ({ title, desc, type }) => {
         {showDesc && <p className="text-gray-400 mt-4">{desc}</p>}
       </div>{" "}
       {type != "PR" && data && <p>{data}</p>}
-      {type == "PR" && data && <QuestionSection data={[data]} />}
+      {type == "PR" && data && (
+        <>
+          <QuestionSection data={[data]} />
+        </>
+      )}
       <div className="w-full flex justify-between">
         <button
           className="bg-[#5E2A8E] rounded-md py-2 px-6"
@@ -162,52 +185,11 @@ const Idea = () => {
   ];
   return (
     <PageWrapper>
-      {/* <div>
-        <h1>Problem Statement:</h1>
-        <button>Generate Problem Statement</button>
-      </div>
-      <div>
-        <h1>Market Research:</h1>
-        <button>Generate Market Research</button>
-      </div>
-      <div>
-        <h1>Product Research:</h1>
-        <button>Generate Product Research</button>
-        <div>
-          <h1>Primary Research:</h1>
-          <button>Generate Primary Research Material</button>
-        </div>
-        <div>
-          <h1>Secondary Research:</h1>
-          <button>Generate Secondary Research Material</button>
-        </div>
-      </div>
-      <div>
-        <h1>User Persona:</h1>
-        <button>Generate User Persona</button>
-      </div> */}
       <div className="flex flex-col w-full gap-y-4 p-6 bg-[#1F1926] rounded-md">
         {sections.map((section, idx) => {
           return <IdeaSection key={idx} {...section} />;
         })}
       </div>
-
-      {/* <div>
-        <h1>Implementation:</h1>
-        <button>Generate Implementation</button>
-      </div>
-      <div>
-        <h1>Tech Stack:</h1>
-        <button>Generate Tech Stack</button>
-      </div>
-      <div>
-        <h1>Future Scope:</h1>
-        <button>Generate Future Scope</button>
-      </div>
-      <div>
-        <h1>Target Audience:</h1>
-        <button>Generate information about target audience</button>
-      </div> */}
     </PageWrapper>
   );
 };
