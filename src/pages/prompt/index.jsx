@@ -8,13 +8,14 @@ import { AiOutlineSend } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import PromptIll from "@/../public/Assets/promptIll.svg";
 import Image from "next/image";
+import Loader from "@/components/Loader";
 export const IdeaLink = ({ idea, idx, id }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user")).uid;
 
   const createIdea = async () => {
     try {
       await setDoc(
-        doc(db, "ideas", user?.uid),
+        doc(db, "users", user),
         {
           ideas: arrayUnion({
             id,
@@ -51,6 +52,7 @@ export const IdeaLink = ({ idea, idx, id }) => {
 const Prompt = () => {
   const [ideas, setIdeas] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
   let myuuid = uuidv4();
   const generateUUID = () => {
     myuuid = uuidv4();
@@ -66,13 +68,19 @@ const Prompt = () => {
             placeholder="Enter keywords or phrase about your idea here"
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <button onClick={() => generateData(prompt, setIdeas, "ideas")}>
+          <button
+            onClick={() => generateData(prompt, setIdeas, "ideas", setLoading)}
+          >
             <AiOutlineSend fontSize={32} />
           </button>
         </div>
         {ideas.length === 0 && (
           <div className="flex w-full items-center justify-center pt-[20vh]">
-            <Image src={PromptIll} alt="Prompt Illustration" />
+            {!loading ? (
+              <Image src={PromptIll} alt="Prompt Illustration" />
+            ) : (
+              <Loader loading={loading} />
+            )}
           </div>
         )}
         {ideas.length > 0 && (
