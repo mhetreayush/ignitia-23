@@ -21,7 +21,10 @@ import Loader from "@/components/Loader";
 
 export const QuestionSection = ({
   data,
+<<<<<<< HEAD
   title,
+=======
+>>>>>>> refs/remotes/origin/main
   initialResponses,
   formId,
   responses,
