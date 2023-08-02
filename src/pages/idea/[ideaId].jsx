@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "../../../firebase";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { BsCheckSquareFill, BsSquare } from "react-icons/bs";
 import { toast } from "react-toastify";
@@ -21,10 +21,7 @@ import Loader from "@/components/Loader";
 
 export const QuestionSection = ({
   data,
-<<<<<<< HEAD
   title,
-=======
->>>>>>> refs/remotes/origin/main
   initialResponses,
   formId,
   responses,
