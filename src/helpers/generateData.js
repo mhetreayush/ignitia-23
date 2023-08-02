@@ -1,5 +1,7 @@
-import testData from "@/../testData.json";
-export const generateData = async (phrase, setData, type) => {
+import { toast } from "react-toastify";
+
+export const generateData = async (phrase, setData, type, setLoading) => {
+  setLoading(true);
   let toGenerate = "";
   const setType = (type) => {
     switch (type) {
@@ -69,7 +71,15 @@ export const generateData = async (phrase, setData, type) => {
     .then((data) => {
       // # Do something with data
       console.log(data);
-      setData(data.choices[0].text);
+      if (type === "PR") {
+        const PRresp = data.choices[0].text;
+        if (PRresp.substring(PRresp.length - 2) != "]}") {
+          toast.error("Failed to generate questionnaire! Trying again!");
+          generateData(phrase, setData, type, setLoading);
+        } else setData(data.choices[0].text);
+      } else setData(data.choices[0].text);
+
+      setLoading(false);
     })
     .catch((err) => {
       console.log("Ran out of tokens for today! Try tomorrow!");

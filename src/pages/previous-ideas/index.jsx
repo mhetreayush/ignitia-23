@@ -8,7 +8,7 @@ const PreviousIdeas = () => {
   const [prevIdeas, setPrevIdeas] = useState([]);
   const fetchIdeas = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const ideasRef = doc(db, "ideas", user?.uid);
+    const ideasRef = doc(db, "users", user?.uid);
     const ideasSnap = await getDoc(ideasRef);
     if (ideasSnap.exists()) {
       setPrevIdeas(ideasSnap.data().ideas);

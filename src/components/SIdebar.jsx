@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GoClock, GoHome } from "react-icons/go";
+import { FaWpforms } from "react-icons/fa";
 const Sidebar = () => {
   const [activePage, setActivePage] = useState("/prompt");
   const router = useRouter();
@@ -20,10 +21,11 @@ const Sidebar = () => {
       link: "/previous-ideas",
       icon: <GoClock size={20} />,
     },
-    // {
-    //     name:"Home",
-    //     link: "/prompt"
-    // }
+    {
+      name: "My Forms",
+      link: "/myForms",
+      icon: <FaWpforms size={20} />,
+    },
   ];
   return (
     <div className="sticky top-0 z-50 mt-10 flex w-full flex-col gap-y-4">
