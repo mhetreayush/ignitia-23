@@ -21,7 +21,7 @@ const Index = () => {
     fetchForms();
   }, []);
   return (
-    <PageWrapper>
+    <PageWrapper title="📝 My Forms">
       <div className="flex flex-col gap-y-4 w-3/4">
         {forms?.map((form, idx) => {
           return (

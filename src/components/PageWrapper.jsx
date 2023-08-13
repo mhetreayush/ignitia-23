@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import Sidebar from "./SIdebar";
 
-const PageWrapper = ({ children }) => {
+const PageWrapper = ({ children, title }) => {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   return (
     <div>
       <div className="w-full p-4">

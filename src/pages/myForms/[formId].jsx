@@ -3,6 +3,7 @@ import { db } from "@/../firebase";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { QuestionSection } from "../idea/[ideaId]";
+import PageWrapper from "@/components/PageWrapper";
 
 const Index = () => {
   const { formId } = useRouter().query;
@@ -21,9 +22,13 @@ const Index = () => {
   }, [formId]);
 
   return (
-    <div>
-      {form?.data && <QuestionSection data={form.data} responses={responses} />}
-    </div>
+    <PageWrapper title={"📊 Form responses"}>
+      <div>
+        {form?.data && (
+          <QuestionSection data={form.data} responses={responses} />
+        )}
+      </div>
+    </PageWrapper>
   );
 };
 

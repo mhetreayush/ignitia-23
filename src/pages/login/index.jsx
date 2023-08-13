@@ -5,7 +5,11 @@ import GoogleButton from "react-google-button";
 import { auth, provider } from "@/../firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 const Index = () => {
+  useEffect(() => {
+    document.title = "🔐 Login";
+  }, []);
   const router = useRouter();
   const signIn = () => {
     signInWithPopup(auth, provider)

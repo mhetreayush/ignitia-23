@@ -59,7 +59,7 @@ const Prompt = () => {
     return myuuid;
   };
   return (
-    <PageWrapper>
+    <PageWrapper title="✒ Prompt">
       <div>
         <div className="flex w-full gap-x-4">
           <input

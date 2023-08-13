@@ -316,7 +316,7 @@ const Idea = () => {
     },
   ];
   return (
-    <PageWrapper>
+    <PageWrapper title={"✨ Idea overview"}>
       <div className="flex flex-col w-full gap-y-6 p-6 bg-[#1F1926] rounded-md">
         {sections.map((section, idx) => {
           return <IdeaSection key={idx} {...section} />;

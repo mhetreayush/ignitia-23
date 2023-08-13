@@ -20,7 +20,7 @@ const PreviousIdeas = () => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageWrapper title="⏮ Previous Ideas">
       <div>
         {prevIdeas.map((idea, idx) => {
           return <IdeaLink key={idx} idx={idx} idea={idea.idea} id={idea.id} />;
