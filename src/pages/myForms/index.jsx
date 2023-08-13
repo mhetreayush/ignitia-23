@@ -20,10 +20,14 @@ const Index = () => {
   }, []);
   return (
     <PageWrapper>
-      <div className="flex flex-col gap-y-4 w-full">
+      <div className="flex flex-col gap-y-4 w-3/4">
         {forms.map((form, idx) => {
           return (
-            <Link key={idx} href={`/myForms/${form.id}`}>
+            <Link
+              className="flex flex-col w-full gap-y-4 p-4 bg-[#1F1926] rounded-md mt-4"
+              key={idx}
+              href={`/myForms/${form.id}`}
+            >
               {form.title}
             </Link>
           );

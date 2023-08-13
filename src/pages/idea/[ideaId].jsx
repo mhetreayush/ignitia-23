@@ -24,6 +24,7 @@ export const QuestionSection = ({
   title,
   initialResponses,
   formId,
+  phrase,
   responses,
 }) => {
   const router = useRouter();
@@ -46,7 +47,7 @@ export const QuestionSection = ({
     try {
       await setDoc(doc(db, "forms", tempLink), {
         data,
-        title,
+        title: phrase,
         responses: JSON.stringify([
           [0, 0, 0, 0],
           [0, 0, 0, 0],
@@ -62,7 +63,7 @@ export const QuestionSection = ({
         {
           forms: arrayUnion({
             id: tempLink,
-            title,
+            title: phrase,
           }),
         },
         { merge: true }
@@ -197,7 +198,7 @@ const IdeaSection = ({ title, desc, type }) => {
   const fetchIdeas = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user")).uid;
-      const docRef = doc(db, "ideas", user);
+      const docRef = doc(db, "users", user);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const arr = docSnap.data().ideas;
@@ -225,7 +226,7 @@ const IdeaSection = ({ title, desc, type }) => {
       {type != "PR" && data && <p>{data}</p>}
       {type == "PR" && data && (
         <>
-          <QuestionSection data={data} title={title} />
+          <QuestionSection data={data} title={title} phrase={phrase} />
         </>
       )}
       <Loader loading={loading} />
